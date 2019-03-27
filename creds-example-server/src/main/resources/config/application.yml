@@ -1,0 +1,11 @@
+---
+security:
+  oauth2:
+    client:
+      clientId: <client-id>
+      clientSecret: <client-secret>
+    resource:
+      tokenInfoUri: <issuer-uri>/v1/introspect
+spring:
+  main:
+    banner-mode: "off"

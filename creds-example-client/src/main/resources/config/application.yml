@@ -1,0 +1,13 @@
+---
+example:
+  baseUrl: http://localhost:8080
+  oauth2:
+    client:
+      grantType: client_credentials
+      clientId: <client-id>
+      clientSecret: <client-secret>
+      accessTokenUri: <issuer-uri>/v1/token
+      scope: custom_mod
+spring:
+  main:
+    banner-mode: "off"
