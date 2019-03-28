@@ -1,6 +1,9 @@
 # How To
 
-see https://developer.okta.com/blog/2018/04/02/client-creds-with-spring-boot
+see
+
+* https://developer.okta.com/blog/2018/04/02/client-creds-with-spring-boot
+* https://developer.okta.com/blog/2019/03/12/oauth2-spring-security-guide
 
 # Getting Started
 
