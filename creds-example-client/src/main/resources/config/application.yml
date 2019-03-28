@@ -7,7 +7,6 @@ example:
       clientId: <client-id>
       clientSecret: <client-secret>
       accessTokenUri: <issuer-uri>/v1/token
-      scope: custom_mod
 spring:
   main:
     banner-mode: "off"
