@@ -1,0 +1,14 @@
+FROM openjdk:8 AS builder
+
+COPY . /proj
+WORKDIR /proj
+RUN ./gradlew clean build -x check --info --stacktrace
+
+
+FROM openjdk:8-jre-alpine
+
+WORKDIR /app
+EXPOSE 8080
+COPY --from=builder /proj/creds-example-server/build/libs/creds-example-server-1.jar /app/server.jar
+ENTRYPOINT [ "java", "-jar", "server.jar" ]
+CMD [ "--server.port=8080" ]

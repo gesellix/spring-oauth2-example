@@ -1,0 +1,21 @@
+HELP.md
+.gradle
+build/
+!gradle/wrapper/gradle-wrapper.jar
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+out/
+
+### VS Code ###
+.vscode/
+.classpath
+.project
+.settings
+bin/
+
+Dockerfile
+**/application-*.yml

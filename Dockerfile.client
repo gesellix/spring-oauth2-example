@@ -1,0 +1,13 @@
+FROM openjdk:8 AS builder
+
+COPY . /proj
+WORKDIR /proj
+RUN ./gradlew clean build -x check --info --stacktrace
+
+
+FROM openjdk:8-jre-alpine
+
+WORKDIR /app
+COPY --from=builder /proj/creds-example-client/build/libs/creds-example-client-1.jar /app/client.jar
+ENTRYPOINT [ "java", "-jar", "client.jar" ]
+CMD [ ]

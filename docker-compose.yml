@@ -1,0 +1,13 @@
+---
+version: "2"
+
+services:
+  server:
+    image: creds-example-server:latest
+    environment:
+      - "SPRING_PROFILES_ACTIVE=example"
+  client:
+    image: creds-example-client:latest
+    environment:
+      - "SPRING_PROFILES_ACTIVE=example"
+      - "example.baseUrl=http://server:8080"
