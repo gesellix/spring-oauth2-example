@@ -1,7 +1,6 @@
 package com.example.credsexampleclient
 
 import groovy.util.logging.Slf4j
-import org.apache.commons.codec.Charsets
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.SpringApplication
@@ -12,8 +11,6 @@ import org.springframework.security.oauth2.client.OAuth2RestTemplate
 import org.springframework.security.oauth2.client.token.grant.client.ClientCredentialsResourceDetails
 import org.springframework.web.client.RestTemplate
 
-import java.nio.charset.Charset
-
 @Slf4j
 @SpringBootApplication
 class ClientApplication implements CommandLineRunner {
@@ -22,41 +19,30 @@ class ClientApplication implements CommandLineRunner {
   private String serverBaseUrl
 
   static void main(String[] args) {
+    //InsecureHttpsUrlConnection.allowInsecureHttpsUrlConnections()
     SpringApplication.run(ClientApplication, args)
   }
 
   @Bean
   @ConfigurationProperties("example.oauth2.client")
-  protected ClientCredentialsResourceDetails oAuthDetails() {
+  ClientCredentialsResourceDetails oAuthDetails() {
     return new ClientCredentialsResourceDetails()
   }
 
   @Bean
-  protected RestTemplate restTemplate() {
-    return new OAuth2RestTemplate(oAuthDetails())
+  RestTemplate restTemplate() {
+    def clientCredentialsAccessTokenProvider = new DebuggingClientCredentialsAccessTokenProvider()
+    clientCredentialsAccessTokenProvider.setInterceptors([new DebuggingClientHttpRequestInterceptor()])
+
+    def oauthTemplate = new OAuth2RestTemplate(oAuthDetails())
+    oauthTemplate.setAccessTokenProvider(clientCredentialsAccessTokenProvider)
+    oauthTemplate.interceptors.add(new DebuggingClientHttpRequestInterceptor())
+    return oauthTemplate
   }
 
   @Override
   void run(String... args) {
-
-    String mode = System.getenv("MODE") ?: "DEMO"
-
-    String response
-
-    switch (mode) {
-      case "DEMO":
-        response = restTemplate().getForObject(serverBaseUrl + "/mod", String)
-        break
-      default:
-        response = restTemplate().getForObject(serverBaseUrl + "/mod", String)
-        break
-    }
+    String response = restTemplate().getForObject(serverBaseUrl + "/mod", String)
     log.info("Response: {}", response)
-  }
-
-  private String toString(InputStream inputStream, Charset charset = Charsets.UTF_8) throws IOException {
-
-    Scanner scanner = new Scanner(inputStream, charset.name())
-    return scanner.useDelimiter("\\A").next()
   }
 }
